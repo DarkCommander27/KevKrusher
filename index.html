@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kev Krusher</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Kev Krusher</h1>
+      <p class="sub">Whack-a-mole, but it’s Kev.</p>
+    </div>
+
+    <div class="hud">
+      <div><span class="label">Score</span> <span id="score">0</span></div>
+      <div><span class="label">Time</span> <span id="time">30.0</span>s</div>
+      <button id="startBtn">Start</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <canvas id="game" width="720" height="720" aria-label="Kev Krusher game canvas"></canvas>
+
+    <section class="help">
+      <h2>How to play</h2>
+      <ul>
+        <li>Click the popping-up Kev targets to score.</li>
+        <li>No penalty for mis-clicks (friendly mode).</li>
+        <li>Game lasts 30 seconds; it speeds up near the end.</li>
+      </ul>
+      <p class="fine">Tip: you can tweak Kev’s look in <code>drawKev()</code>.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="status">Ready.</span>
+  </footer>
+
+  <script src="game.js"></script>
+</body>
+</html>
