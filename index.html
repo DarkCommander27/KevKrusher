@@ -3,8 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Kev Krusher - A fast-paced whack-a-mole style game. Click popping-up Kevs to score points in 30 seconds!" />
+  <meta name="keywords" content="game, whack-a-mole, kev, casual, browser" />
+  <meta name="author" content="DarkCommander27" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta property="og:title" content="Kev Krusher" />
+  <meta property="og:description" content="A fast-paced whack-a-mole style game. Click popping-up Kevs to score points!" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
   <title>Kev Krusher</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
   <header class="topbar">
@@ -21,23 +30,161 @@
   </header>
 
   <main class="wrap">
-    <canvas id="game" width="720" height="720" aria-label="Kev Krusher game canvas"></canvas>
+    <div class="game-section">
+      <canvas id="game" width="720" height="720" aria-label="Kev Krusher game canvas"></canvas>
+    </div>
 
-    <section class="help">
-      <h2>How to play</h2>
-      <ul>
-        <li>Click the popping-up Kev targets to score.</li>
-        <li>No penalty for mis-clicks (friendly mode).</li>
-        <li>Game lasts 30 seconds; it speeds up near the end.</li>
-      </ul>
-      <p class="fine">Tip: you can tweak Kev’s look in <code>drawKev()</code>.</p>
-    </section>
+    <aside class="sidebar">
+      <!-- Game Mode Selection -->
+      <div class="panel">
+        <h3>Game Mode</h3>
+        <div class="mode-buttons">
+          <button class="mode-btn" data-mode="timeRush" title="Classic 30 second game">⏱️ Time Rush</button>
+          <button class="mode-btn" data-mode="survival" title="Endless with escalating difficulty">🧟 Survival</button>
+          <button class="mode-btn" data-mode="zen" title="Relaxed play, no timer">🧘 Zen</button>
+          <button class="mode-btn" data-mode="challenge" title="20 seconds of intense action">⚡ Challenge</button>
+          <button class="mode-btn" data-mode="endurance" title="2 minute marathon">💪 Endurance</button>
+        </div>
+      </div>
+
+      <!-- Character Skin Selection -->
+      <div class="panel">
+        <h3>Character</h3>
+        <div class="skin-buttons">
+          <button class="skin-btn" data-skin="classic" title="Classic look">📝 Classic</button>
+          <button class="skin-btn" data-skin="punk" title="Purple punk style">🎸 Punk</button>
+          <button class="skin-btn" data-skin="cyberpunk" title="Cyberpunk neon">🤖 Cyber</button>
+          <button class="skin-btn" data-skin="vintage" title="Vintage 1970s">📻 Vintage</button>
+          <button class="skin-btn" data-skin="tropical" title="Tropical vacation">🏝️ Tropical</button>
+        </div>
+      </div>
+
+      <!-- Theme Selection -->
+      <div class="panel">
+        <h3>Theme</h3>
+        <div class="theme-buttons">
+          <button class="theme-btn" data-theme="dark" style="--accent: #7cf1b8;" title="Dark theme">🌙 Dark</button>
+          <button class="theme-btn" data-theme="neon" style="--accent: #ff007f;" title="Neon theme">⚡ Neon</button>
+          <button class="theme-btn" data-theme="ocean" style="--accent: #00c8ff;" title="Ocean theme">🌊 Ocean</button>
+          <button class="theme-btn" data-theme="sunset" style="--accent: #ffa500;" title="Sunset theme">🌅 Sunset</button>
+          <button class="theme-btn" data-theme="forest" style="--accent: #64ff96;" title="Forest theme">🌲 Forest</button>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="panel stats-panel">
+        <h3>Stats</h3>
+        <div class="stat-item">
+          <span class="stat-label">High Score:</span>
+          <span class="stat-value" id="statHighScore">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Hits:</span>
+          <span class="stat-value" id="statHits">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Accuracy:</span>
+          <span class="stat-value" id="statAccuracy">0%</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Playtime:</span>
+          <span class="stat-value" id="statPlaytime">0h</span>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="panel">
+        <h3>Settings</h3>
+        <button id="settingsBtn" class="settings-btn">⚙️ Settings</button>
+        <button id="achievementsBtn" class="achievements-btn">🏆 Achievements (0/8)</button>
+      </div>
+
+      <!-- How to Play -->
+      <div class="panel help-panel">
+        <h3>How to Play</h3>
+        <ul>
+          <li>Click popping-up Kevs to score</li>
+          <li>No penalty for mis-clicks</li>
+          <li>Different modes offer unique challenges</li>
+          <li>Earn achievements for milestones</li>
+        </ul>
+      </div>
+    </aside>
   </main>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-item">
+          <label>
+            <input type="checkbox" id="soundToggle" checked />
+            Sound Effects
+          </label>
+        </div>
+        <div class="setting-item">
+          <label>
+            <input type="checkbox" id="musicToggle" checked />
+            Background Music
+          </label>
+        </div>
+        <div class="setting-item">
+          <label>Volume: <span id="volumeValue">100</span>%</label>
+          <input type="range" id="volumeSlider" min="0" max="100" value="100" />
+        </div>
+        <div class="setting-item">
+          <button id="resetStatsBtn" class="danger-btn">Reset All Stats</button>
+        </div>
+        <div class="setting-item">
+          <button id="exportStatsBtn" class="secondary-btn">Export Stats</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Achievements Modal -->
+  <div id="achievementsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Achievements</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="achievements-grid" id="achievementsGrid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer">
     <span id="status">Ready.</span>
   </footer>
 
+  <script src="audio.js"></script>
+  <script src="themes.js"></script>
+  <script src="stats.js"></script>
+  <script src="gamemodes.js"></script>
   <script src="game.js"></script>
+
+  <script>
+    // Register service worker for offline support
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.log('ServiceWorker registration failed:', err);
+      });
+    }
+    
+    // Suppress manifest CORS errors (doesn't affect gameplay, only PWA install)
+    document.addEventListener('error', (e) => {
+      if (e.filename && e.filename.includes('manifest')) {
+        console.log('Manifest fetch issue (non-critical for gameplay)');
+      }
+    }, true);
+  </script>
 </body>
 </html>
