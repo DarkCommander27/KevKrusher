@@ -1,0 +1,20 @@
+# Jekyll configuration for GitHub Pages
+title: Kev Krusher
+description: A fast-paced whack-a-mole style game
+url: https://DarkCommander27.github.io/KevKrusher
+repository: DarkCommander27/KevKrusher
+author: DarkCommander27
+
+# Build settings
+markdown: kramdown
+theme: null
+plugins: []
+
+# Exclude from processing
+exclude:
+  - node_modules
+  - .gitignore
+  - README.md
+
+# Output settings
+output: _site
